@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>问答系统</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .gourpbtn {
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-bottom: 15px;
+        }
+
+        .progress {
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            background-color: #f5f5f5;
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            top: 51px;
+            padding: 20px 0 0 0;
+        }
+
+        .nav-sidebar > .active > a,
+        .nav-sidebar > .active > a:hover,
+        .nav-sidebar > .active > a:focus {
+            color: #fff;
+            background-color: #428bca;
+        }
+
+        #searchAns {
+            font-weight: bold;
+        }
+
+        #sb {
+            text-align: left;
+        }
+
+        .searchBar {
+            width: 60%;
+            margin: auto;
+        }
+
+        .answer-panel {
+            height: 180px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            visibility: hidden;
+        }
+
+        .cao-panel {
+            height: 180px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">问答系统</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能 <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">我的提问</a></li>
+                        <li><a href="#">我的回答</a></li>
+                        <li><a href="#">我的任务</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#sbsb">注销</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">帮助</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="用户名...">
+                    <input type="text" class="form-control" placeholder="密码...">
+                </div>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#log">登录</button>
+            </form>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+
+<div class="container-fluid">
+<div class="row">
+
+
+<div class="col-xs-12 col-md-2 left_section">
+    <ul class="nav nav-pills nav-stacked my-left-nav" role="tablist">
+        <li role="presentation" class="active"><a href="#main" data-toggle="tab">总览</a></li>
+        <li role="presentation"><a href="#searchTab" id="searchAns" data-toggle="tab">搜索答案</a></li>
+        <li role="presentation"><a href="#askTab" data-toggle="tab">我要提问</a></li>
+        <li role="presentation"><a href="#answerTab" data-toggle="tab">我要回答</a></li>
+        <li role="presentation"><a href="#taskTab" data-toggle="tab">我的任务</a></li>
+    </ul>
+<!--
+    <div style="margin: 50px 0 0 15px">
+        <h4>userName</h4>
+        <p><b>积分：</b><span>100</span></p>
+        <p><b>头衔：</b><span>专家</span></p>
+    </div>
+-->
+
+</div>
+
+<div class="tab-content">
+
+<div class="tab-pane active" id="main">
+    <div class="col-xs-12 col-md-10 right_section">
+        <div class="page-header">
+            <h1>欢迎您，userName！</h1>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">公告栏</div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info btn" id="sb">我的消息<span
+                                    class="badge">20</span></li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info btn" id="sb">我的提问<span
+                                    class="badge">20</span></li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info btn" id="sb">我的回答<span
+                                    class="badge">20</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">最新提醒</div>
+                    <div class="panel-body">
+                        <div class="alert alert-success" role="alert">
+                            您的提问<strong>如何找到有效客户</strong>有了新的回答！
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            您的回答<strong>金属冷处理过程中遇到的问题</strong>被提问者采纳！
+                        </div>
+                        <div class="alert alert-warning" role="alert">
+                            恭喜您，您的威望已经提高到2级！
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">推荐给您的问题</div>
+
+
+                    <div id="carousel-example" class="carousel slide panel-body">
+                        <ol class=" carousel-indicators">
+                            <li data-target="#carousel-example" data-slide="0" class="active"></li>
+                            <li data-target="#carousel-example" data-slide="1"></li>
+                            <li data-target="#carousel-example" data-slide="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item active">
+
+                                <div>
+                                    <h3>抛光的时候老开裂，怎么办？</h3>
+
+                                    <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                                    <a href="question.html" type="button" class="btn btn-primary">我来回答 >></a>
+                                </div>
+                            </div>
+                            <div class="item">
+
+                                <div>
+                                    <h3>求教各位大神</h3>
+
+                                    <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！
+                                        我是测试代码是懒得开房间爱死劳动法律上看的减肥；阿拉山口的叫法我是测试代码我是测试代码</p>
+                                    <a href="question.html" type="button" class="btn btn-primary">我来回答 >></a>
+                                </div>
+                            </div>
+                            <div class="item">
+
+                                <div>
+                                    <h3>抛光的时候老开裂，怎么办？</h3>
+
+                                    <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                                    <a href="question.html" type="button" class="btn btn-primary">我来回答 >></a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#carousel-example" class="carousel-control left" role="button"
+                           data-slide="prev" style="height: 60%">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a href="#carousel-example" class="carousel-control right" role="button"
+                           data-slide="next" style="height: 60%">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">任务进度</div>
+                    <div class="panel-body">
+                        <label class="label label-primary">新手任务</label>
+
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
+                                <span class="sr-only">80% Complete</span>
+                            </div>
+                        </div>
+                        <label class="label label-danger">小有名气</label>
+
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-danger" role="progressbar"
+                                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                 style="width: 60%;">
+                                <span class="sr-only">60% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--搜索-->
+<div class="tab-pane" id="searchTab">
+    <div class="col-xs-12 col-md-10 right_section">
+        <h3 style="text-align: center; margin-bottom: 20px">请输入您要搜索的内容：</h3>
+
+
+        <div class="input-group searchBar">
+            <input type="text" class="form-control">
+                    <span class="input-group-btn">
+                         <button class="btn btn-primary" type="button" id="gogogo">搜索答案</button>
+                    </span>
+        </div>
+        <!-- /input-group -->
+
+
+        <div class="panel panel-primary answer-panel" style="height:193px;">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">
+                    <a href="question.html">抛光的时候老开裂，怎么办？</a></h3>
+            </div>
+            <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">
+                <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                <ul>
+                    <li>我是测试一</li>
+                    <li>我是测试二</li>
+                    <li>我是测试三</li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <span>2014-09-19 </span>
+                <span class="pull-right">回答者：大侠 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;2个回答 </span></div>
+        </div>
+
+
+        <div class="panel panel-primary answer-panel" style="height:193px;">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis;"><a href="question.html">我在测试比较长的文本我在测试比较长的文本我在测试比较长的文本我在
+                    测试比较长的文本我在测试比较长的文本我在测试比较长的文本我在测试比较长的文本我在测试比较长的文本</a></h3>
+            </div>
+            <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">
+                <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+
+                <p>
+                    我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本
+                    我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本
+                    我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本
+                    我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本我再测试长文本
+                </p>
+            </div>
+            <div class="panel-footer">
+                <span>2014-09-19 </span>
+                <span class="pull-right">回答者：大侠 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;2个回答 </span>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--提问-->
+<div class="tab-pane" id="askTab">
+
+    <div class="tab-pane">
+        <div class="col-xs-12 col-md-10 right_section">
+
+
+            <div class="input-group searchBar">
+                <h4 style="margin-bottom: 15px">一句话描述您的疑问：</h4>
+                <input type="text" class="form-control" placeholder="在这里输入问题的描述...">
+
+                <form role="form" class="pull-left">
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option>机械</option>
+                            <option>冶金</option>
+                            <option>化工</option>
+                        </select>
+                    </div>
+                </form>
+
+                <form role="form" class="pull-left">
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option>生产</option>
+                            <option>销售</option>
+                            <option>乱搞</option>
+                        </select>
+                    </div>
+                </form>
+
+
+                <div style="margin-top: 105px">
+                    <h4 style="margin-bottom: 15px">问题补充：（选填）</h4>
+
+                    <form role="form">
+                        <div class="form-group">
+                            <textarea style="resize:none; height: 200px" class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+
+                    <div class="row" style="margin-top: 225px">
+                        <div class="col-sm-5">
+                            <p class="pull-left" >悬赏积分：</p>
+
+                            <form role="form" class="pull-left">
+                                <div class="form-group">
+                                    <select class="form-control">
+                                        <option>5分</option>
+                                        <option>10分</option>
+                                        <option>15分</option>
+                                        <option>20分</option>
+                                        <option>30分</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <input type="checkbox" class="pull-right">
+                        <p class="pull-right">匿名</p>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary pull-right">提交问题</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!--我的任务-->
+        <div class="tab-pane" id="taskTab">
+            <div class="tab-pane">
+                <div class="col-xs-12 col-md-10 right_section">
+
+
+
+
+
+
+                </div></div>
+        </div>
+
+
+        <!--我要回答-->
+        <div class="tab-pane" id="answerTab">
+            <div class="tab-pane">
+                <div class="col-xs-12 col-md-10 right_section">
+
+
+                    <h3 style="margin-bottom: 15px">这些问题等您回答：</h3>
+
+                    <div class="panel panel-primary cao-panel" style="height:193px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">
+                                <a href="question.html">抛光的时候老开裂，怎么办？</a></h3>
+                        </div>
+                        <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">
+                            <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                            <ul>
+                                <li>我是测试一</li>
+                                <li>我是测试二</li>
+                                <li>我是测试三</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <span>2014-09-19 </span>
+                            <span class="pull-right">回答者：大侠 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;2个回答 </span></div>
+                    </div>
+
+
+
+                    <div class="panel panel-primary cao-panel" style="height:193px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">
+                                <a href="question.html">抛光的时候老开裂，怎么办？</a></h3>
+                        </div>
+                        <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">
+                            <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                            <ul>
+                                <li>我是测试一</li>
+                                <li>我是测试二</li>
+                                <li>我是测试三</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <span>2014-09-19 </span>
+                            <span class="pull-right">回答者：大侠 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;2个回答 </span></div>
+                    </div>
+
+
+                    <div class="panel panel-primary cao-panel" style="height:193px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">
+                                <a href="question.html">抛光的时候老开裂，怎么办？</a></h3>
+                        </div>
+                        <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">
+                            <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                            <ul>
+                                <li>我是测试一</li>
+                                <li>我是测试二</li>
+                                <li>我是测试三</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <span>2014-09-19 </span>
+                            <span class="pull-right">回答者：大侠 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;2个回答 </span></div>
+                    </div>
+
+
+                    <div class="panel panel-primary cao-panel" style="height:193px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">
+                                <a href="question.html">抛光的时候老开裂，怎么办？</a></h3>
+                        </div>
+                        <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">
+                            <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                            <ul>
+                                <li>我是测试一</li>
+                                <li>我是测试二</li>
+                                <li>我是测试三</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <span>2014-09-19 </span>
+                            <span class="pull-right">回答者：大侠 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;2个回答 </span></div>
+                    </div>
+
+
+
+                    <div class="panel panel-primary cao-panel" style="height:193px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">
+                                <a href="question.html">抛光的时候老开裂，怎么办？</a></h3>
+                        </div>
+                        <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">
+                            <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+                            <ul>
+                                <li>我是测试一</li>
+                                <li>我是测试二</li>
+                                <li>我是测试三</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <span>2014-09-19 </span>
+                            <span class="pull-right">回答者：大侠 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;2个回答 </span></div>
+                    </div>
+
+
+
+
+
+
+
+
+                </div></div>
+        </div>
+
+
+
+    </div>
+</div>
+</div>
+
+
+<!--弹窗-->
+<div class="modal fade" id="sbsb">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认要注销吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!--弹窗-->
+<div class="modal fade" id="log">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">提示：</h4>
+            </div>
+            <div class="modal-body">
+                <p>登陆成功！</p>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
+<script>
+
+    $(function () {
+        $("#gogogo").click(
+                function (e) {
+                    // alert("fuck");
+                    $(".answer-panel").css({"visibility": "visible"});
+
+                });
+
+
+        $("a").attr({"target":"_blank"}) ;
+
+    });
+
+
+</script>
+
+
+</body>
+</html>

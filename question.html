@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>问答系统</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <style>
+        body {
+            padding-top: 5px;
+            padding-left: 100px;
+            padding-bottom: 20px;
+        }
+
+        .gourpbtn {
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-bottom: 15px;
+        }
+
+        .progress {
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            background-color: #f5f5f5;
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            top: 51px;
+            padding: 20px 0 0 0;
+        }
+
+        .nav-sidebar > .active > a,
+        .nav-sidebar > .active > a:hover,
+        .nav-sidebar > .active > a:focus {
+            color: #fff;
+            background-color: #428bca;
+        }
+
+
+        #searchAns {
+            font-weight: bold;
+        }
+
+        #sb {
+            text-align: left;
+        }
+
+        .searchBar {
+            width: 60%;
+        }
+
+        .answer-panel {
+            width: 80%;
+        }
+
+        .fuck-panel {
+            width: 80%;
+            margin-top: 10px;
+            margin-left: 20%;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+
+<h4 style=" margin-bottom: 5px;">请输入您要搜索的内容：</h4>
+
+<div class="input-group searchBar">
+    <input type="text" class="form-control">
+    <span class="input-group-btn">
+        <button class="btn btn-primary" type="button" id="gogogo">搜索答案</button>
+    </span>
+</div>
+
+
+<div style="margin-top: 15px; border: 1px solid #428bca; width: 90%;">
+
+
+    <div class="panel panel-primary answer-panel"">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a href="">抛光的时候老开裂，怎么办？</a></h3>
+        </div>
+        <div class="panel-body">
+            <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+            <ul>
+                <li>我是测试一</li>
+                <li>我是测试二</li>
+                <li>我是测试三</li>
+            </ul>
+        </div>
+        <div class="panel-footer">
+            <span>2014-09-19 </span>
+            <span class="pull-right">提问者：小菜 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;悬赏分：20分 </span></div>
+    </div>
+
+
+    <hr class="divider" style="background-color: #428bca"></span>
+
+    <div class="panel panel-danger fuck-panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <a href="">最佳答案</a></h3>
+    </div>
+    <div class="panel-body">
+        <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+        <ul>
+            <li>我是测试一</li>
+            <li>我是测试二</li>
+            <li>我是测试三</li>
+        </ul>
+    </div>
+    <div class="panel-footer">
+        <span>2014-09-19 </span>
+        <span class="pull-right">回答者：大神 &nbsp;&nbsp;&nbsp;&nbsp; </span></div>
+    </div>
+
+
+    <div class="panel panel-success fuck-panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a href="">其他答案</a></h3>
+        </div>
+        <div class="panel-body">
+            <p>45号钢，每次抛光的时候就有很大的概率会开裂，大概2mm的厚度。求解答，急！</p>
+            <ul>
+                <li>我是测试一</li>
+                <li>我是测试二</li>
+                <li>我是测试三</li>
+            </ul>
+        </div>
+        <div class="panel-footer">
+            <span>2014-09-19 </span>
+            <span class="pull-right">回答者：大神 &nbsp;&nbsp;&nbsp;&nbsp; </span></div>
+    </div>
+
+
+<hr class="divider" style="background-color: #428bca"></span>
+
+
+
+<!--我来回答-->
+<div style="margin-left: 20% ; margin-bottom: 30px">
+    <h4 style="margin-bottom: 15px">我来回答：</h4>
+
+    <form role="form">
+        <div class="form-group">
+            <textarea style="resize:none; height: 200px" class="form-control" rows="3"></textarea>
+        </div>
+    </form>
+
+            <button type="button" class="btn btn-primary" style="margin-left: 85%">提交回答</button>
+    </div>
+</div>
+
+
+
+
+</div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
+    <script>
+
+
+
+
+    </script>
+
+
+</body>
+</html>
