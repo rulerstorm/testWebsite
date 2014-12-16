@@ -6,8 +6,8 @@
 </head>
 
 <?php	
-setcookie("uid", $row[0], time()-100); 
-setcookie("username", $row[1], time()-100); 
+setcookie("uid", '', time()-100); 
+setcookie("username", '', time()-100); 
 
 echo "注销成功！"
 ?>

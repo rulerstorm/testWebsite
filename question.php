@@ -85,7 +85,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">问答系统</a>
+            <a class="navbar-brand" href='../index.php'>问答系统</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -93,8 +93,9 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href='../index.php'>首页</a></li>
                 <li><a href="../ask0.php">我要提问</a></li>
-                <li><a href="#">我的提问</a></li>
-                <li><a href="#">我的回答</a></li>
+                <li><a href="../find0.php">找答案</a></li>
+                <li><a href="../my_question.php">我的提问</a></li>
+                <li><a href="../my_answer.php">我的回答</a></li>
                 <li><a href="#">帮助</a></li>
             </ul>
 
@@ -115,7 +116,9 @@
     <!-- /.container-fluid -->
 </nav>
 
+<h2 style=" margin-bottom: 25px ; margin-top: 65px;"> 问题解答 </h2>
 
+<!--
 <h4 style=" margin-bottom: 5px;margin-top: 55px;">请输入您要搜索的内容：</h4>
 
 <div class="input-group searchBar" style="margin-bottom:20px">
@@ -125,7 +128,7 @@
     </span>
 </div>
 
-
+-->
 
 <?php
 	require_once 'mysql.php';
@@ -141,34 +144,81 @@
         echo '<div class="panel panel-primary answer-panel" style="height:193px;">
             <div class="panel-heading">
                 <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">';
-                    echo '<a href=question.php/?id='.$row[0].'>'.$row[2].'</a></h3>';
+                    echo $row[2].'</h3>';
         echo '</div>
-            <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">';
+            <div class="panel-body" style="height: 108px; overflow: auto">';
                 echo '<p>'.$row[3].'</p>';
         echo '</div>
             <div class="panel-footer">
-                <span>2014-09-19 </span>';
-            echo '<span class="pull-right">提问者：'.$row[1].'&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;'.$row[4].'个回答</span></div>
+                <span>&nbsp</span>';
+
+    $sql2 = "select username from account where uid=".$row[1];
+    $usname = mysql_query($sql2); $name = mysql_fetch_row($usname);
+
+
+    $best = $row[6];
+
+            echo '<span class="pull-right">提问者：'.$name[0].'</span></div>
         </div>';
     }
 
+
+    echo '<hr>';
+
+//采纳答案
+    if($best == 1){
+        $sql_best = "select * from answer where qid=$qid && best=1";
+        $res_best = mysql_query($sql_best);
+
+        while($row = mysql_fetch_row($res_best)){
+            echo '<div class="panel panel-danger answer-panel" style="height:193px;">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="height: 18px;">';
+                        echo $row[2].'的回答<span class="pull-right">采纳答案</span></h3>';
+            echo '</div>
+                <div class="panel-body" style="height: 108px; overflow: auto;">';
+                    echo '<p>'.$row[3].'</p>';
+            echo '</div>';
+            echo '</div>';};
+
+    }
+
+
+
+
+//普通答案
     $sql = "select * from answer where qid=".$qid;
 	$res = mysql_query($sql);
 
     while($row = mysql_fetch_row($res)){
+
+        if($row[4]==1){
+            continue;
+        }
 
         echo '<div class="panel panel-info answer-panel" style="height:193px;">
             <div class="panel-heading">
                 <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">';
                     echo $row[2].'的回答</h3>';
         echo '</div>
-            <div class="panel-body" style="height: 108px; overflow: hidden; text-overflow: ellipsis; ">';
+            <div class="panel-body" style="height: 108px; overflow: auto;">';
                 echo '<p>'.$row[3].'</p>';
-        echo '</div>
-            <div class="panel-footer">
-                <span>2014-09-19 </span>';
-            echo '<span class="pull-right">者：'.$row[0].'&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;'.$row[4].'个回答</span></div>
-        </div>';
+        echo '</div>';
+
+            if($best==0 && $name[0]==$_COOKIE["username"]){
+
+            echo '<div class="panel-footer">
+                <span> &nbsp </span>';
+            echo '<span class="pull-right">';
+                echo '<form action="../best.php" method="post">';
+                echo "<input type='hidden' name='qid' value=$qid>";
+                echo "<input type='hidden' name='aid' value=$row[0] >";
+                echo '<input type="submit" name="submit" value="采纳回答">';
+                echo "</form>";
+                echo '</span></div>';
+            }
+
+            echo '</div>';
     };
 
 

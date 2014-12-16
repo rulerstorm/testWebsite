@@ -21,10 +21,15 @@
 
 	$res = mysql_query($sql);
 
+	$sql = "update question set count=count+1 where qid=$qid";
+
+	$res = mysql_query($sql);
+
+
 			echo '回答成功';
 			echo '<br/>';
 			echo '<br/>';
-			echo "<a href='index.php'>返回</a>";
+			echo "<a href='question.php/?id=".$qid."'>返回</a>";
 
 ?>
 </body>
