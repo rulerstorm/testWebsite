@@ -40,7 +40,6 @@ if($que = $_POST["search"]){
     con_sql("ask_question");
 
 
-
     exec("./fenci $que", $output);
 
     $sbsb = array();
@@ -85,9 +84,12 @@ if($que = $_POST["search"]){
                 <span>&nbsp</span>';
             echo '<span class="pull-right">'.$row[4].'&nbsp 个回答</span></div>
         </div>';
+
+        $count++; 
+
     }
 
-    if(!$res){
+    if(!$count){
         echo "没找到答案！";
     }
 
