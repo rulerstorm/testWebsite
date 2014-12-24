@@ -20,11 +20,11 @@ require_once 'navi.php';
 
 
 <div style="margin-left: 10%" >
-<form action="find0.php" method="post">
+<form action="find0.php" method="get">
 
 
 
-<h3 style=" margin-bottom: 5px;margin-top: 5px;margin-left: 10%">请输入您要搜索的内容：</h3>
+<h3 style="margin-top: 5px;margin-left: 10%">请输入您要搜索的内容：</h3>
 
 <div class="input-group searchBar" style="margin-bottom:20px;margin-left: 10%">
     <input type="text" name="search" class="form-control">
@@ -33,11 +33,47 @@ require_once 'navi.php';
     </span>
 </div>
 
+
+<div class="btn-group" data-toggle="buttons" style=" margin-bottom: 15px;margin-left: 10%">
+  <label class="btn btn-primary active">
+    <input type="radio" name="q_type" value="所有分类" autocomplete="off" checked>所有分类
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" name="q_type" value="生产" autocomplete="off"> 生产
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" name="q_type" value="市场" autocomplete="off"> 市场
+  </label>
+    <label class="btn btn-primary">
+    <input type="radio" name="q_type" value="其他" autocomplete="off"> 其他
+  </label>
+</div>
+
+
+
 <?php
 
-if($que = $_POST["search"]){
+if($que = $_GET["search"]){
     require_once 'mysql.php';
     con_sql("ask_question");
+
+    $type = $_GET["q_type"];
+
+    switch ($type) {
+        case '生产':
+            $q_type = 0;
+            break;
+        case '市场':
+            $q_type = 1;
+            break;      
+        case '其他':
+            $q_type = 2;
+            break;
+        case '所有分类':
+            $q_type = 99;
+            break;   
+    }
+
 
 
     exec("./fenci $que", $output);
@@ -49,12 +85,22 @@ if($que = $_POST["search"]){
         $sql = "select qid from question where title like '%$value%'";
         $res = mysql_query($sql);
         while($row = mysql_fetch_row($res)){
+
+            if($q_type!=99 && $q_type==$row[5]){
+                continue;
+            }
+
             array_push($sbsb, $row[0]);
         }
 
         $sql = "select qid from question where content like '%$value%'";
         $res = mysql_query($sql);
         while($row = mysql_fetch_row($res)){
+
+            if($q_type!=99 && $q_type==$row[5]){
+                continue;
+            }
+            
             array_push($sbsb, $row[0]);
         }
     }
@@ -90,7 +136,7 @@ if($que = $_POST["search"]){
     }
 
     if(!$count){
-        echo "没找到答案！";
+        echo "</br>没找到答案！";
     }
 
 

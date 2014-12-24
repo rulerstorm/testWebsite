@@ -19,8 +19,6 @@
 </nav>
 
 
-
-
 <h2 style="margin-left:10%">我的提问</h2>
 
 
@@ -48,8 +46,13 @@
 
         echo ' answer-panel" style=" overflow: auto;">
             <div class="panel-heading">
-                <h3 class="panel-title" style="height: 18px; overflow: hidden; text-overflow: ellipsis; ">';
-                    echo '<a href=question.php/?id='.$row[0].'>'.$row[2].'</a></h3>';
+                <h3 class="panel-title" style="overflow: hidden; text-overflow: ellipsis; ">';
+                    echo '<a href=question.php/?id='.$row[0].'>'.$row[2].'</a>
+                    <input type="submit" value="删除问题" class="pull-right" 
+                    data-toggle="modal" data-target="#'.$row[0].'">
+                    <input type="hidden" name="qid" value='.$row[0].'>
+                    </h3>';
+                    
         echo '</div>
             <div class="panel-body" >';
                 echo '<p style="width:100%">'.$row[3].'</p>';
@@ -58,12 +61,56 @@
         //         <span>&nbsp</span>';
         //     echo '<span class="pull-right">'.$row[4].'&nbsp 个回答</span></div>
         echo '</div>';
+
+      echo  ' <div class="modal fade" id="'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除问题</h4>
+      </div>
+      <div class="modal-body">
+        确认要删除吗？
+      </div>
+      <form action="delete_question.php" method="get">
+      <input type="hidden" name="qid" value='.$row[0].'>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <input type="submit" value="删除" class="btn btn-danger" >
+      </div>
+      </form>
+    </div>
+  </div>
+</div>';
+
+
+
     }
 
 ?>
 
 
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除问题</h4>
+      </div>
+      <div class="modal-body">
+        确认要删除吗？
+      </div>
+      <form action="delete_question.php" method="get">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="testss" type="button" class="btn btn-danger">删除</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 
@@ -71,12 +118,6 @@
 
 
 
-
-
-
-
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 </body>
 </html>
