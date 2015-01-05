@@ -9,7 +9,6 @@ require_once 'navi.php';
                 echo '<div class="pull-right" style="color:white; font-size:22px; margin-top:8px">你好,'.$_COOKIE["username"].'</div>';
             }
 
-
             ?>
         </div>
         <!-- /.navbar-collapse -->
@@ -20,7 +19,7 @@ require_once 'navi.php';
 
 
 <div style="margin-left: 10%" >
-<form action="ask.php" method="post">
+<form action="index.php" method="post">
 
 
 
