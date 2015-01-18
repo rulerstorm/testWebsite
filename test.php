@@ -2,71 +2,87 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-    <meta charset="utf-8">
+<meta charset="utf-8">
 </head>
 <body>
 
 <?php
-    
-	$client = new SoapClient('http://app.nbinfo.cn/SSO/SSOService.svc?wsdl');
-    print_r ($client);
 
-	if(!$_REQUEST["IASID"]){
-		header("location:http://app.nbinfo.cn"); 
-	}else if ($_REQUEST["IASID"] 
-                && $_REQUEST["TimeStamp"]
-                && $_REQUEST["AppUrl"]
-                && $_REQUEST["UserAccount"]
-                && $_REQUEST["Authenticator"]){
+$client = new SoapClient('http://app.nbinfo.cn/SSO/SSOService.svc?wsdl');
+//    print_r ($client);
+
+//	if(!$_REQUEST["IASID"]){
+//		header("location:http://app.nbinfo.cn"); 
+//	}else
+if ($_REQUEST["IASID"] 
+		&& $_REQUEST["TimeStamp"]
+		&& $_REQUEST["AppUrl"]
+		&& $_REQUEST["UserAccount"]
+		&& $_REQUEST["Authenticator"]){
 
 	$arrayName = array( "IASID" => $_REQUEST["IASID"],   
-                        "TimeStamp" => $_REQUEST["TimeStamp"], 
-                        "AppUrl" => $_REQUEST["AppUrl"], 
-                        "UserAccount" => $_REQUEST["UserAccount"],
-                        "EnterpriseId" => $_REQUEST["EnterpriseId"], 
-                        "Password" => $_REQUEST["Password"], 
-                        "Authenticator" => $_REQUEST["Authenticator"]
-                      );
+			"TimeStamp" => $_REQUEST["TimeStamp"], 
+			"AppUrl" => $_REQUEST["AppUrl"], 
+			"UserAccount" => $_REQUEST["UserAccount"],
+			"EnterpriseId" => $_REQUEST["EnterpriseId"], 
+			"Password" => $_REQUEST["Password"], 
+			"Authenticator" => $_REQUEST["Authenticator"]
+			);
 
-    $res = $client->__soapCall('ValidateEACTokenByWCF', array($arrayName));
+	$res = $client->__soapCall('ValidateEACTokenByWCF', array($arrayName));
 
-                         
 
-         if($res){
-            //我这边的登录
-         require_once 'mysql.php';
-         $uid = $_REQUEST["UserAccount"];
-         $eid = $_REQUEST["EnterpriseId"];
-             
-        con_sql("ask_question");
 
-        $sql = "select * from account where uid='".$uid."'";
+	if($res){
+		//我这边的登录
+		require_once 'mysql.php';
+		$uid = $_REQUEST["UserAccount"];
+		$eid = $_REQUEST["EnterpriseId"];
 
-        //echo $sql;
+		con_sql("ask_question");
 
-        $res = mysql_query($sql);
+		$sql = "select * from account where uid='".$uid."'";
 
-            if(!($row = mysql_fetch_row($res))){
+		//echo $sql;
 
-                $arrayName1 = array('enterpriseID' =>  intval($eid) , 
-                                   'userID' =>  intval($uid) );
+		$res = mysql_query($sql);
 
-                $res1 = $client->__soapCall('getUser', array($arrayName1));
+		if(!($row = mysql_fetch_row($res))){
 
-                //写入数据库
-            }
+			$arrayName1 = array('enterpriseID' =>  intval($eid) , 
+					'userID' =>  intval($uid) );
 
-            //写cookie
-            header()
+			$res1 = $client->__soapCall('getUser', array($arrayName1));
 
-         }else{
-            //返回平台登录
-          header("location:http://app.nbinfo.cn"); 
-         }
+			//写入数据库
+			$userInfo = $res1->getUserResult;
+
+			$username = $userInfo->User_Name;
+			$password = $userInfo->Password;
+			$Enterprise_ID = $eid;
+			$User_Email = $userInfo->$User_Email;
+			$User_Photo = $userInfo->$User_Photo;
+
+			$sql = "insert into account values ($uid, $username, $password, $Enterprise_ID, $User_Email, $User_Photo)";
+			
+			mysql_query($sql);
+
+		}
+		
+		//写cookie
+		setcookie("uid", $uid, time()+3600*24*30*12*10); 
+		setcookie("username", $username, time()+3600*24*30*12*10); 
+		
+		header("location:http://app.nbinfo.cn/asksystem/index.php");
+
+	}
 }
+//	else{
+//返回平台登录
+header("location:http://app.nbinfo.cn"); 
+//       }
 
 
-	
 
 
 ?>
