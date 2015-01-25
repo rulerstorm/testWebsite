@@ -1,4 +1,3 @@
-<?php ob_start(); ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -57,30 +56,53 @@ if ($_REQUEST["IASID"]
 			//写入数据库
 			$userInfo = $res1->getUserResult;
 
+			//print_r($userInfo);
+
 			$username = $userInfo->User_Name;
 			$password = $userInfo->Password;
 			$Enterprise_ID = $eid;
-			$User_Email = $userInfo->$User_Email;
-			$User_Photo = $userInfo->$User_Photo;
-
-			$sql = "insert into account values ($uid, $username, $password, $Enterprise_ID, $User_Email, $User_Photo)";
 			
-			mysql_query($sql);
+			if($userInfo->User_Email){
+				$User_Email = $userInfo->User_Email;
+			}else{
+				$User_Email = '';
+			}
+			
+			if ($userInfo->User_Photo) {
+				$User_Photo = $userInfo->User_Photo;
+			}else{
+				$User_Photo = 0;
+			}
+			
 
+			$sql = "insert into account values ($uid, '$username', '$password', $Enterprise_ID, '$User_Email', $User_Photo)";
+			
+			echo $sql;
+
+			if(!mysql_query($sql)){
+				header("location:http://app.nbinfo.cn"); 
+			}
+
+		}else{
+			$uid = $row[0];
+			$username = $row[1]; 
 		}
 		
 		//写cookie
 		setcookie("uid", $uid, time()+3600*24*30*12*10); 
 		setcookie("username", $username, time()+3600*24*30*12*10); 
 		
-		header("location:http://app.nbinfo.cn/asksystem/index.php");
+		header("location:index.php");
 
-	}
-}
-//	else{
+	}else{
 //返回平台登录
 header("location:http://app.nbinfo.cn"); 
-//       }
+       }
+
+}else{
+//返回平台登录
+header("location:http://app.nbinfo.cn"); 
+       }
 
 
 
